@@ -2,6 +2,9 @@
 ### APRA OverDRIVE/ 2020
 #### March 23, 2020
 
+![](https://github.com/jrogol/OverDRIVE2020/blob/master/Assets/title.png)
+
+
 This repository hosts the materials for the "Thinking Reproducibly" presentation and corresponding workshop, offered at APRA's [OverDRIVE/ conference](https://www.aprahome.org/page/overdrive-2020).
 To download the materials, click the green "Clone or Download" button in the upper right of the repository, and selecting [Download ZIP](https://github.com/jrogol/OverDRIVE2020/archive/master.zip). 
 
@@ -9,7 +12,7 @@ To download the materials, click the green "Clone or Download" button in the upp
 
 Files are organized into following folders:
 
-* [Assets](https://github.com/jrogol/OverDRIVE2020/tree/master/Assets): `.pdf` versions of the [presentation]() and [workshop](.)
+* [Assets](https://github.com/jrogol/OverDRIVE2020/tree/master/Assets): `.pdf` versions of the [presentation](https://github.com/jrogol/OverDRIVE2020/blob/master/Assets/ThinkingReproducibly.pdf) and [workshop]()
 * [Data](https://github.com/jrogol/OverDRIVE2020/tree/master/Data): Six `csv` files used in the workshop
   - [data-raw](https://github.com/jrogol/OverDRIVE2020/tree/master/Data/data-raw): Raw files from which the workshop files were created. For more, see below.
 * [R](https://github.com/jrogol/OverDRIVE2020/tree/master/R/): `.R` files containing exercises for the workshop.
