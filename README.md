@@ -2,7 +2,7 @@
 ### APRA OverDRIVE/ 2020
 #### March 23, 2020
 
-![img](https://github.com/jrogol/OverDRIVE2020/blob/master/Assets/title.png)
+![img](https://github.com/jrogol/OverDRIVE2020/blob/master/Assets/Title.png)
 
 
 This repository hosts the materials for the "Thinking Reproducibly" presentation and corresponding workshop, offered at APRA's [OverDRIVE/ conference](https://www.aprahome.org/page/overdrive-2020).
