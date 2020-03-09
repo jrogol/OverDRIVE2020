@@ -1,7 +1,3 @@
-# Thinking Reproducibly
-### APRA OverDRIVE/ 2020
-#### March 23, 2020
-
 ![img](https://github.com/jrogol/OverDRIVE2020/blob/master/Assets/Title.png)
 
 
