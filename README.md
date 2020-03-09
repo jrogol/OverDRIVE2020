@@ -37,3 +37,11 @@ The [`here`](https://here.r-lib.org/) package can aid in heuristically locating 
 Jenny Bryan's [__Ode to the here package__ ](https://github.com/jennybc/here_here) gives an excellent overview of how to use it.
 Additionally, the [`keyring`](https://github.com/r-lib/keyring) package offers a way to utilize password protected resources without embedding the password in scripts.
 Lastly, [`janitor`](http://sfirke.github.io/janitor/) provided functions for preprocessing the data, primarily when standardizing column names.
+
+These packages can be installed using the following code:
+```r
+install.packages("tidyverse")
+install.packages("here")
+install.packages("keyring")
+install.packages("janitor")
+```
