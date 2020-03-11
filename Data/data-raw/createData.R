@@ -54,7 +54,7 @@ yearOnly <- donorData_bio %>%
 donorData_bio <- donorData_bio %>% 
   left_join(yearOnly, by = "ID") %>% 
   mutate(BIRTH_DT = coalesce(BIRTH_DT,BIRTH_DATE)) %>% 
-  select(-BIRTH_DATE)
+  select(-BIRTH_DATE,-AGE)
 
 #### Add School and clean up Degree level
 donorData_bio <- donorData_bio %>% 
