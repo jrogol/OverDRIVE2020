@@ -40,60 +40,6 @@ yourData <- read_csv("Data/rawData.csv")
 #### QUESTION: How can this be addressed? ####
 
 
-
-
-
-
-
-
-# Standardizing the file structure for every analysis is helpful!
-
-# The following function helps create folders for a project if they don't yet
-# exist. 
-
-createStructure <- function(...) {
-  
-  exists <- c()
-  
-  created <- c()
-  
-  l <- list(...)
-  
-  if (length(l) == 0) {
-    l <- list("Data","Markdown","Output", "Reports","SQL","R", "Snippets","Assets")
-  }
-  
-  for (i in l) {
-    if (!dir.exists(i)) {
-      dir.create(i)
-      created <- c(created,i)
-    } else {
-      exists <- c(exists,i)
-    }
-  }
-  
-  if (length(exists) > 0) {
-    message(sprintf("Folder(s) already exist for: %s",paste(exists,
-                                                            collapse = ", ")))
-  }
-  
-  if (length(created) > 0) {
-    message(sprintf("Created folder(s) for: %s",paste(created, collapse = ", ")))
-    
-  }
-}
-
-# While you could run `source(here("R/createStructure.R"))`, I've placed it
-# in an *R package*, and shared it interally. Package creation is beyond the
-# scope of this workshop, but for those interested, here are a few
-# introductions:
-# *  https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/ 
-# *  https://tinyheero.github.io/jekyll/update/2015/07/26/making-your-first-R-package.html
-# *  The deep dive: http://r-pkgs.had.co.nz/
-
-
-
-
 # The here package --------------------------------------------------------
 
 # The here package is one solution to locating file paths. It looks for short
@@ -122,16 +68,9 @@ runif(5,min = 0, max = 1)
 
 
 
+#### ACTIVITY: Cluster Alumni based on data in basicReport ####
 
-
-
-
-
-
-
-# While the randomness is the point, it's certainly not reproducible. To better
-# illustrate this point, let's try and create 5 clusters of donors based on the
-# numeric variables in the "basicReport" data set.
+# For simplicity's sake, we'll use only numeric variables.
 
 df <- basicReport %>% 
   # Only select the numeric variables.
@@ -157,43 +96,17 @@ km.out2 <- kmeans(df,5)
 table(km.out$cluster,km.out2$cluster)
 
 
+#### ACTIVITY: Re-run the models, setting the seed. ####
 
-
-
-
-
-
-
-
-
-#     1   2   3   4   5
-# 1   9   0   0   0   0
-# 2   0   0  30  72   0
-# 3   0   6   0   0   0
-# 4   0   0   0   0 115
-# 5   0   0  12   0   0
-
-# K Means uses a random start point, so the results will always provide a
-# *local* optimum solution, which isn't always the *global* or overall best
-# result.
-
-# To get around this issue, we can use the `set.seed()` function.
-
-
-set.seed(2020)
+# Set the seed below to the same number.
+set.seed()
 km.out3 <- kmeans(df,5)
-set.seed(2020)
+set.seed()
 km.out4 <- kmeans(df,5)
 
-# With the seed set before building each model, the results are identical!
+# Compare the results, as before.
 table(km.out3$cluster,km.out4$cluster)
 
-#     1   2   3   4   5
-# 1  42   0   0   0   0
-# 2   0   9   0   0   0
-# 3   0   0 121   0   0
-# 4   0   0   0  69   0
-# 5   0   0   0   0   3
 
 # This is also true when running other random features. The following will
 # produce the same results when you run the code!
@@ -222,33 +135,15 @@ dates <- donorBio %>%
 
 head(dates)
 
-
-
-
-
-
-
-
-
-
-# Glancing at the data, BIRTH_DT is an 8-character string: YYYYMMDD.
-
 #### ACTIVITY: Try converting `BIRTH_DT` to a date class. ####
 
 datesConverted <- dates %>% 
   mutate(date = as.Date(BIRTH_DT))
 
-
-
-
-
-
-
-
 # We need to specify the format.
 datesConverted <- dates %>% 
   mutate(date = as.Date(BIRTH_DT,
-                        format = "%Y%m%d"))
+                        format = ""))
 
 # We can then calculate an approximate age.
 datesConverted <- datesConverted %>% 
@@ -267,69 +162,6 @@ tail(datesConverted)
 #### QUESTION: How to we work around this? ####
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-# One option is to extract the year from the string.
-getYear <- function(dateString) {
-  # Get the first four characters
-  year <- substr(dateString,1,4)
-  
-  # Find those with no data, i.e. "00000000"
-  noYear <- year == "0000"
-  # ...and set them to NA
-  year[noYear] <- NA
-  
-  # Return the results as a number.
-  as.numeric(year)
-}
-
-# Note that this is a simple, monotonic function. It doesn't attempt to do too
-# much, making it easy to troubleshoot.
-
-withAge <- dates %>% 
-  mutate(year = getYear(BIRTH_DT),
-         approxAge = as.numeric(format(Sys.Date(),"%Y")) - year)
-
-# How are things looking now?
-tail(withAge)
-
-# A More sophisticated option can synthesize an actual date object, setting
-# missing months to January, and missing days to the first of the month.
-
-approxDate <- function(date){
-  
-  year <- substr(date,1,4)
-  month <- substr(date,5,6)
-  day <- substr(date,7,8)
-  
-  noYear <- year == "0000"
-  
-  noMonth <- month == "00" | is.na(month)
-  
-  month[noMonth] <- "01"
-  
-  noDay <- day == "00" | is.na(day)
-  
-  day[noDay] <- "01"
-  
-  d <- as.Date(paste(year,month,day,sep="-"))
-  
-  d[noYear] <- NA
-  
-  d
-}
-
 # Reshaping Data ----------------------------------------------------------
 
 
@@ -341,29 +173,16 @@ giving <- read_csv("Data/currentGiving.csv")
 
 head(giving)
 
+#### ACTIVITY: Convert the giving to appropriate class  ####
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-# The dollar amounts are formatted like currency - convert them to a number.
+# Replace `newFunction` as you see fit.
 giving <- giving %>% 
-  mutate(CurrFYGiving = parse_number(CurrFYGiving))
+  mutate(CurrFYGiving = newFunction(CurrFYGiving))
 
-# Combine the giving data with the donor's biographic data, using `ID` as the
-# key.
+# Combine the giving data with the donor's biographic data.
 givingData <- donorBio %>% 
   select(ID, SCHOOL) %>% 
-  left_join(giving, by = "ID")
+  left_join(giving, by = "")
 
 #### ACTIVITY: Summarize the year ####
 
@@ -372,20 +191,12 @@ givingData <- donorBio %>%
 
 # Hint: Non-Alumni will be missing `SCHOOL`
 
-
-
-
-
-
-
-
-
 FY20Total <- givingData %>% 
   # Exclude non-alumni, who are missing `SCHOOL`
-  filter(!is.na(SCHOOL)) %>% 
-  summarize(total = sum(CurrFYGiving),
-            alums = n_distinct(ID),
-            donors = sum(CurrFYGiving>0))
+  filter() %>% 
+  summarize(total = ,
+            alums = ,
+            donors = )
 
 # And then plot a bar graph of donors vs. non Donors
 FY20Total %>% 
@@ -404,19 +215,12 @@ FY20Total %>%
 # Suppose the Med school wants to focus on their alumni ONLY. You could rewrite
 # the above:
 
-
-
-
-
-
-
-
 FY20Total <- givingData %>% 
   # Exclude non-alumni, who are missing `SCHOOL`
   filter(SCHOOL == "Medicine") %>% 
-  summarize(total = sum(CurrFYGiving),
-            alums = n(),
-            donors = sum(CurrFYGiving>0))
+  summarize(total = ,
+            alums = ,
+            donors = )
 
 # Easy enough, but you'd also have to change the Titles by hand!
 
@@ -430,61 +234,12 @@ FY20Total %>%
   geom_bar(stat = "identity") +
   labs(title = "School of Medicine Alumni Participation in FY20",
        fill = NULL)
-
-
-
 #### QUESTION: How would you approach it for other schools more reproducibly? ####
 
 
 
-
-
-
-
-
-
-
-
-
-# One option: use a variable for the School. This is especially helpful if you use the school 
-
-school <- "Medicine"
-
-FY20 <- givingData %>% 
-  group_by(SCHOOL) %>% 
-  summarize(total = sum(CurrFYGiving),
-            alums = n(),
-            donors = sum(CurrFYGiving>0))
-
-FY20 %>% 
-  filter(SCHOOL == school) %>% 
-  mutate(nonDonors = alums - donors) %>% 
-  select(donors,nonDonors) %>% 
-  gather(type, count) %>% 
-  mutate(segment = paste("School of ",school)) %>% 
-  # Create a stacked bar chart with donors on the bottom.
-  ggplot(aes(x= segment, y = count, fill = fct_rev(type))) +
-  geom_bar(stat = "identity") +
-  labs(title = paste("School of",school,
-                     "Alumni Participation in FY20"),
-       fill = NULL)
-
 #### ACTIVITY: Try Changing the school (e.g. "Engineering") ####
 
-school <- "Engineering"
-
-FY20 %>% 
-  filter(SCHOOL == school) %>% 
-  mutate(nonDonors = alums - donors) %>% 
-  select(donors,nonDonors) %>% 
-  gather(type, count) %>% 
-  mutate(segment = paste("School of ",school)) %>% 
-  # Create a stacked bar chart with donors on the bottom.
-  ggplot(aes(x= segment, y = count, fill = fct_rev(type))) +
-  geom_bar(stat = "identity") +
-  labs(title = paste("School of",school,
-                     "Alumni Participation in FY20"),
-       fill = NULL)
 
 
 #### ACTIVITY: More Data ####
@@ -494,77 +249,10 @@ FY20 %>%
 
 threeYr <- read_csv("Data/threeYrGiving.csv")
 
-
 #### QUESTION: How does this connect to the existing data? What about the formatting? ####
 
-head(threeYr)
 
 
-
-
-
-
-
-
-
-
-
-# One option would be to reshape the original data to make it a year:
-
-reshaped <- givingData %>% 
-  mutate(year = 2020) %>% 
-  rename(giving = CurrFYGiving)
-
-reshaped <- reshaped %>% 
-  select(ID, SCHOOL) %>% 
-  left_join(threeYr, by = "ID") %>% 
-  bind_rows(reshaped) %>% 
-  filter(!is.na(year))
-
-# Another option would be to reshape the new data from long (each ID/year
-# combination on a new line) to wide (one row per ID)
-
-threeYrGiving <- threeYr %>% 
-  mutate(year = paste0("FY",year)) %>% 
-  spread(year, giving,
-         fill = 0)
-
-head(threeYrGiving)
-
-# Then combine with the givingData.
-threeYear <- givingData %>% 
-  # Make the column name consistent
-  rename(FY2020 = CurrFYGiving) %>%
-  # Left joins keep all the IDs from givingData - the new data only includes
-  # those who've donated!
-  left_join(threeYrGiving, by = "ID") %>% 
-  # Fill '18 and '19 missing values with 0.
-  mutate_if(is.numeric, replace_na,0)
-
-head(threeYear)
-
-# Reshape again, this time to long, so that both `SCHOOL` and `year` can be
-# variables.
-threeYear_reshape <- threeYear %>% 
-  gather(year, giving, -c(ID, SCHOOL)) %>% 
-  # Extract the year from the "FYxxxx" strings.
-  mutate(year = parse_number(year))
-
-head(threeYear_reshape)
-
-three_YearTotals <- threeYear_reshape %>% 
-  group_by(SCHOOL,year) %>%
-  summarize(total = sum(giving),
-            alums = n_distinct(ID),
-            donors = sum(giving>0))
-
-# Set a variable for the year
-yr <- 2020
-
-# And filter with *two* variables.
-three_YearTotals %>% 
-  filter(SCHOOL == school,
-         year <= yr)
 
 
 # Explore on your own -----------------------------------------------------
