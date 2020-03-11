@@ -20,7 +20,7 @@ The files in the [`data/data-raw`]() folder were obtained from the  [Kaggle Fund
 
 * `data_science_for_fundraising_contact_reports.csv` provides data from 196 anonymized contact reports. Originally included with the [Data Science for Fundraising](http://nandeshwar.info/ds4fundraising/) book by Asutosh Nandeshwar and Rodger Devine.
 * `data_science_for_fundraising_donor_data.csv` contains data for 34,000 anonymized constituents. Originally included with the [Data Science for Fundraising](http://nandeshwar.info/ds4fundraising/).
-* lasala_das_2018.xlsx` was created by Michael Lasala for his presentation __"You Ain't Seen Nothing Yet": Intro to Data Analysis and Visualization in Excel__ at the 2018 Data Analytics Symposium.
+* lasala_das_2018.xlsx` was created by Michael Lasala for his presentation _"You Ain't Seen Nothing Yet": Intro to Data Analysis and Visualization in Excel_ at the 2018 Data Analytics Symposium.
 
 To better reflect data seen in the wild, the files in the [`data` folder](https://github.com/jrogol/OverDRIVE2020/tree/master/Data/) were adapted from the above using the [`createData.R` script](https://github.com/jrogol/OverDRIVE2020/blob/master/Data/data-raw/createData.R).
 
