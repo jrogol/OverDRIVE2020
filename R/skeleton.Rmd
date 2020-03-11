@@ -1,0 +1,67 @@
+---
+title: "Title Goes Here"
+author: "Author Name"
+date: "`r format(Sys.Date(),'%d %B %Y')`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+
+knitr::opts_chunk$set(echo = FALSE,
+                      message = F,
+                      warning = F,
+                      fig.showtext = TRUE,
+                      dpi = 72)
+```
+
+## Background
+
+A __Brief__ summary of the project's *background*. Provide the context to the business question at hand, before moving on to a more in-depth __analysis plan__ in subsequent sections.
+
+## The Data
+
+```{r loadData}
+
+```
+
+
+## Analysis
+
+### Business Question 1
+
+What is the business question this analysis will address?
+
+#### Actionable Approach
+
+Outline and undertake the steps to answer the above question, such as model types, visualizations and/or comparisons.[^robinson]
+
+```{r analysis}
+
+```
+
+
+## Future Work
+
+## Session Info
+
+Analysis and Report generated on `r sessionInfo()[["running"]]` using `r sessionInfo()[["R.version"]]$version.string`.
+
+```{r dependencies, results='asis'}
+# Lists attached packages
+function(...) {
+  packages <- sessioninfo::package_info(...)
+
+  p <- sprintf("%s (%s)",
+               packages$package[packages$attached == T],
+               packages$loadedversion[packages$attached == T])
+
+  for (x in p) {
+    cat("- ", x, "\n")
+  }
+
+}
+```
+
+<!-- Insert Footnotes Below -->
+[^robinson]: Emily Robinson and Jacqueline Nolis. [Build a Career in Data Science](https://www.manning.com/books/build-a-career-in-data-science#toc). April 2020.
